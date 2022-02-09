@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>RCON</title>
+  </head>
+  <body>
+    <script>
+      var connection = new WebSocket(`ws://${window.location.host}/`);
+      
+      connection.addEventListener("open", () => {
+        connection.send("message from client");
+      });
+      connection.addEventListener("close", () => {
+        console.log("connection closed");
+      });
+      connection.addEventListener("message", msg => {
+        console.log(msg);
+      });
+    </script>
+  </body>
+</html>
